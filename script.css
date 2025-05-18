@@ -1,0 +1,77 @@
+const citasDiv = document.getElementById('citas');
+const imagenesDiv = document.getElementById('imagenes');
+const chequearBtn = document.getElementById('chequear');
+const resultadoDiv = document.getElementById('resultado');
+
+let citas = [];
+let imagenes = [];
+let seleccionados = [];
+
+function mezclar(arr) {
+  return arr.sort(() => Math.random() - 0.5);
+}
+
+function cargarDatos() {
+  fetch('https://thesimpsonsquoteapi.glitch.me/quotes?count=5')
+    .then(res => res.json())
+    .then(data => {
+      citas = mezclar(data);
+      imagenes = mezclar([...data]);
+      mostrarCitas();
+      mostrarImagenes();
+    })
+    .catch(() => {
+      resultadoDiv.textContent = 'Error al cargar datos';
+    });
+}
+
+function mostrarCitas() {
+  citasDiv.innerHTML = '';
+  citas.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'cita';
+    div.textContent = item.quote;
+    div.dataset.index = i;
+    div.addEventListener('click', () => seleccionar('cita', i));
+    citasDiv.appendChild(div);
+  });
+}
+
+function mostrarImagenes() {
+  imagenesDiv.innerHTML = '';
+  imagenes.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'imagen';
+    div.dataset.index = i;
+
+    const img = document.createElement('img');
+    img.src = item.image;
+    img.alt = item.character;
+    div.appendChild(img);
+
+    div.addEventListener('click', () => seleccionar('imagen', i));
+    imagenesDiv.appendChild(div);
+  });
+}
+
+function seleccionar(tipo, index) {
+
+  if (seleccionados.length < 2) {
+    seleccionados.push({ tipo, index });
+    marcarSeleccionado(tipo, index);
+  }
+
+}
+
+function marcarSeleccionado(tipo, index) {
+  const container = tipo === 'cita' ? citasDiv : imagenesDiv;
+  const elem = container.children[index];
+  elem.classList.add('seleccionado');
+}
+
+chequearBtn.addEventListener('click', () => {
+ 
+  resultadoDiv.textContent = 'función para chequear';
+});
+
+cargarDatos();

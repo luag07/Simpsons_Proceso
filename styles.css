@@ -1,0 +1,36 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+
+.contenedor {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+#citas, #imagenes {
+  width: 320px;
+}
+
+.cita, .imagen {
+  border: 1px solid black;
+  margin: 10px 0;
+  padding: 10px;
+  cursor: pointer;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imagen img {
+  max-width: 70px;
+  max-height: 70px;
+  object-fit: contain;
+}
+
+.seleccionado {
+  background-color: #ddd;
+}
